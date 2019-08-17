@@ -14,6 +14,8 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 import cv2
 import numpy as np
+import os
+
 
 # Global variables
 batch_size = 32
@@ -27,13 +29,19 @@ l2_regularization = 0.01
 dataset_path = './fer2013/fer2013.csv'
 
 # helper function
+def dataset2csv( dir_path ):
+    for (root, subdirs, file_names) in os.walk(dir_path):
+        if (len(file_names) != 0):
+        
+
+
 def load_fer2013():
     data = pd.read_csv(dataset_path)
     pixels = data['pixels'].tolist()
     width, height = 48, 48
     faces = []
     for pixel_sequence in pixels:
-        face = [int(pixel) for pixel in pixel_sequence.split(' ')]park
+        face = [int(pixel) for pixel in pixel_sequence.split(' ')]
         face = np.asarray(face).reshape(width, height)
         face = cv2.resize(face.astype('uint8'), image_size)
         faces.append(face.astype('float32'))
@@ -89,7 +97,7 @@ residual = BatchNormalization()(residual)
 x = SeparableConv2D(32, (3, 3), padding='same', kernel_regularizer=regularization, use_bias=False)(x)
 x = BatchNormalization()(x)
 x = Activation('relu')(x)
-x = SeparableConv2D(32, (3, 3), padding='same', kernel_regularizer=regularization, use_bias=False)(x)
+x = (32, (3, 3), padding='same', kernel_regularizer=regularization, use_bias=False)(x)
 x = BatchNormalization()(x)
 x = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(x)
 x = layers.add([x, residual])
@@ -140,7 +148,7 @@ callbacks = [model_checkpoint, csv_logger, early_stop, reduce_lr]
 faces, emotions = load_fer2013()
 faces = preprocess_input(faces)
 num_samples, num_classes = emotions.shape
-
+xtrain, xtest,ytrain,ytest = train_test_split(faces, emotions,test_size=0.2,shuffle=True)
 model.fit_generator(data_generator.flow(xtrain, ytrain,batch_size),
                         steps_per_epoch=len(xtrain) / batch_size,
                         epochs=num_epochs, verbose=1, callbacks=callbacks,
