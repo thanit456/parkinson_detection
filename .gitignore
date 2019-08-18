@@ -1,10 +1,10 @@
-/model
-/data
-/dataset
-/__pycache__
-/fer2013
-/paper
-/sample
+/model/*
+/data/*
+/dataset/*
+/__pycache__/*
+/fer2013/*
+/paper/*
+/sample_data/*
 *.jpeg
 *.png
 *.jpg
