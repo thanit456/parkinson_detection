@@ -5,6 +5,7 @@ import numpy as np
 import argparse
 import dlib
 import cv2
+import pandas as pd
 
 # import local
 import utils
@@ -45,20 +46,34 @@ for (root, subdirs, file_names) in os.walk(args['input_dir']):
             rects = detector(gray, 1)
 
             for (i, rect) in enumerate(rects):
+                
+                #####################
+                
+                 ### 1. CROP LIP ###
+
+                #####################
+
                 shape = predictor(gray, rect)
                 shape = face_utils.shape_to_np(shape)
                 
-                clone = image.copy()
-                cv2.putText(clone, body_part, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
-                    0.7, (0, 0, 255), 2)
+                # clone = image.copy()
+                # #cv2.putText(clone, body_part, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
+                #     0.7, (0, 0, 255), 2)
 
                 body_part_shape = shape[FACIAL_LANDMARKS_IDXS[body_part][0]: FACIAL_LANDMARKS_IDXS[body_part][1]]
 
-                for (x, y) in body_part_shape:
-                    cv2.circle(clone, (x, y), 1, (0, 0, 255), -1)
+                # for (x, y) in body_part_shape:
+                #     cv2.circle(clone, (x, y), 1, (0, 0, 255), -1)
 
                 (x, y, w, h) = cv2.boundingRect(np.array(body_part_shape))
                 roi = image[y: y+h, x: x+w]
                 roi = imutils.resize(roi, width=250, inter=cv2.INTER_CUBIC)
+                
+                ##################################
+                
+                 ### 2.GATHER FEATURE POSITION ###
+
+                ##################################
+                
                 
                 
