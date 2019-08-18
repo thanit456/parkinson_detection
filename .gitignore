@@ -1,3 +1,10 @@
+/model
+/data
+/dataset
+/__pycache__
+/fer2013
+/paper
+/sample
 *.jpeg
 *.png
 *.jpg
