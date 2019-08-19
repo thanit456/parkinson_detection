@@ -6,6 +6,7 @@ import argparse
 import dlib
 import cv2
 import pandas as pd
+import os
 
 # import local
 import utils
@@ -75,5 +76,6 @@ for (root, subdirs, file_names) in os.walk(args['input_dir']):
 
                 ##################################
                 
+                shape = predictor
                 
                 
